@@ -1,9 +1,18 @@
 package com.kh.menu.controller;
 
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.menu.model.dto.MenuDto;
+import com.kh.menu.model.dto.MenuDto.MenuPost;
 import com.kh.menu.model.service.MenuService;
 
 import lombok.RequiredArgsConstructor;
@@ -40,10 +49,44 @@ public class MenuController {
 	 * */
 	private final MenuService menuService;
 	
+	/*
+	 *  #3. REST API설계 원칙
+	 *  1) 명사를 사용하여 자원을 작성한다
+	 *   - /getMenus => /menus (복수형으로 작성을 권장)
+	 *  2) 새로운 api 생성을 지양한다.
+	 *   - 필터용 데이터는 URI가 아닌 쿼리스트링으로 전달한다.
+	 *  3) 응답상태를 반드시 전달한다.
+	 */
+	
 	@GetMapping("/menus")
-	public ResponseEntity<?> menus(){
-		return null;
+	public ResponseEntity<List<MenuDto.MenuResponse>> menus(
+				@RequestParam HashMap<String, Object> param	// 검색 파라미터값
+				){
+		List<MenuDto.MenuResponse> list = menuService.selectMenus(param);
+		
+		log.debug("list:{}",list);
+		
+		return ResponseEntity.ok(list);
 	}
 	
+	// 메뉴등록
+	// 4) 행위를 URI에 포함 시키지 않는다.
+	//  - /menus/insert -> Post + /menus
+	@PostMapping("/menus")
+	public ResponseEntity<Void> insertMenu(@RequestBody MenuPost menu){
+		int result = menuService.insertMenu(menu);
+		
+		if(result>0) {
+			// Post요청의 경우 응답데이터 header에 이동할 uri정봅를 적어주는 것이 규칙
+			URI location = URI.create("/menus/"+menu.getId());
+			// 201 Created post 성공
+			return ResponseEntity.created(location).build();
+		}else {
+			// 400 bad Request
+			return ResponseEntity.badRequest().build(); //400 bad Request
+			
+		}
+		
+	}
 
 }
