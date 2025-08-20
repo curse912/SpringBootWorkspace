@@ -30,5 +30,22 @@
 			#{taste}
 		)
 	</insert>
-	
+	<select id="detailMenu"  resultType="com.kh.menu.model.dto.MenuDto$MenuResponse">
+		SELECT *
+		FROM MENU
+		WHERE ID=#{id}
+	</select>
+	<update id="updateMenu">
+		UPDATE MENU SET
+			RESTAURANT = #{restaurant},
+			NAME = #{name},
+			PRICE = #{price},
+			TYPE = #{type},
+			TASTE = #{taste}
+		WHERE ID = #{id}
+	</update>
+	<delete id="deleteMenu">
+		DELETE FROM MENU
+		WHERE ID=#{id}
+	</delete>
 </mapper>

@@ -1,5 +1,8 @@
 package com.kh.menu.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +19,28 @@ public class MenuDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class MenuResponse{
+		@Positive(message = "메뉴 id는 양수입니다.")
+		@NotBlank(message = "필수입니다.")
+		@Schema(description = "메뉴 id",example = "1")
+		private long id;
+		
+		@Schema(description = "식당명", example = "경민통닭")
+		private String restaurant;
+		private String name;
+		
+		@Schema(description = "가격(원)",example = "10000",minimum = "0")
+		private int price;
+		
+		@Schema(description = "메뉴타입(kr, jp,ch)", example = "kr", allowableValues = {"kr","jp","ch"})
+		private String type;
+		
+		private String taste;
+	}
+	
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class MenuPost{
 		private long id;
 		private String restaurant;
 		private String name;
@@ -27,7 +52,7 @@ public class MenuDto {
 	@Data
 	@NoArgsConstructor
 	@AllArgsConstructor
-	public static class MenuPost{
+	public static class MenuPut{
 		private long id;
 		private String restaurant;
 		private String name;

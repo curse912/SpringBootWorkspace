@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.menu.model.dao.MenuDao;
 import com.kh.menu.model.dto.MenuDto.MenuPost;
+import com.kh.menu.model.dto.MenuDto.MenuPut;
 import com.kh.menu.model.dto.MenuDto.MenuResponse;
 
 @Service
@@ -24,6 +25,20 @@ public class MenuService {
 
 	public int insertMenu(MenuPost menu) {
 		return dao.insertMenu(menu);
+	}
+
+	public MenuResponse detailMenu(int id) {
+		return dao.detailMenu(id);
+	}
+
+
+	public int updateMenu(MenuPut menu) {
+		return dao.updateMenu(menu);
+	}
+
+
+	public int deleteMenu(long id) {
+		return dao.deleteMenu(id);
 	}
 	
 

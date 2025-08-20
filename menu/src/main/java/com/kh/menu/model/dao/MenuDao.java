@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.menu.model.dto.MenuDto.MenuPost;
+import com.kh.menu.model.dto.MenuDto.MenuPut;
 import com.kh.menu.model.dto.MenuDto.MenuResponse;
 
 @Repository
@@ -23,4 +24,15 @@ public class MenuDao {
 		return session.insert("menumapper.insertMenu",menu);
 	}
 
+	public MenuResponse detailMenu(int id) {
+		return session.selectOne("menumapper.detailMenu",id);
+	}
+
+	public int updateMenu(MenuPut menu) {
+		return session.update("menumapper.updateMenu",menu);
+	}
+
+	public int deleteMenu(long id) {
+		return session.delete("menumapper.deleteMenu",id);
+	}
 }
