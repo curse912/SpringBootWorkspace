@@ -79,6 +79,9 @@ public class MenuController {
 	 *  3) 응답상태를 반드시 전달한다.
 	 */
 	
+	// Swagger 들어가는 방법
+	// http://localhost:8081/api/swagger-ui/index.html#/Menu%20Api/menus
+	
 	// api의 메타데이터 설정하기
 	@GetMapping("/menus")
 	@Operation(summary="메뉴 목록 조회",description="메뉴 목록 조회.type,taste로 필터링 가능")
@@ -109,6 +112,7 @@ public class MenuController {
 		@ApiResponse(responseCode = "201",description = "메뉴 생성 성공"),
 		@ApiResponse(responseCode = "400",description = "메뉴 생성 실패")
 	})
+	@CrossOrigin(origins = "http://localhost:5173", exposedHeaders = "Location")	//react 연동
 	public ResponseEntity<Void> insertMenu(@RequestBody MenuPost menu){
 		int result = menuService.insertMenu(menu);
 		
@@ -140,6 +144,7 @@ public class MenuController {
 					,content=@Content(schema = @Schema(implementation = MenuResponse.class))),
 		@ApiResponse(responseCode = "400",description = "메뉴 조회 실패")
 	})
+	@CrossOrigin(origins = "http://localhost:5173")	//react 연동
 	public ResponseEntity<MenuResponse> detailMenu(@PathVariable int id){	//, required= true, example="1"
 		MenuResponse menu = menuService.detailMenu(id);
 		
@@ -195,5 +200,7 @@ public class MenuController {
 			return ResponseEntity.noContent().build();
 		}
 	}
+	
+	
 	
 }
